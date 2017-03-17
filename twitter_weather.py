@@ -37,5 +37,5 @@ ACCESS_TOKEN_SECRET = ''
 api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
 file = open('five_day_forecast_glasgow.png', 'rb')
 data = file.read()
-r = api.request('statuses/update_with_media', {'status':'5 Day Forecast for Glasgow from {} to {}'.format(df['Date \ Time'][0], df['Date \ Time'][39])}, {'media[]':data})
+r = api.request('statuses/update_with_media', {'status':'5 Day Forecast for Glasgow from {} to {}'.format(df['Date \ Time'][0], df['Date \ Time'][len(df['Date \ Time'])-1])}, {'media[]':data})
 print(r.status_code)
