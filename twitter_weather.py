@@ -23,7 +23,7 @@ delta1 = datetime.timedelta(days=1)
 delta5 = datetime.timedelta(days=5)
 delta_1_day = today + delta1
 delta_5_day = today + delta5
-mask = (df['Time'] >= delta_1_day) & (df['Time'] < delta_5_day)
+mask = (df['Time'] >= delta_1_day) & (df['Time'] <= delta_5_day)
 df = df.loc[mask]
 
 ax=plt.gca()
@@ -45,8 +45,10 @@ CONSUMER_SECRET = ''
 ACCESS_TOKEN_KEY = ''
 ACCESS_TOKEN_SECRET = ''
 
+
+
 api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
 file = open('five_day_forecast_glasgow.png', 'rb')
 data = file.read()
-r = api.request('statuses/update_with_media', {'status':'4 Day Forecast for Glasgow from {} to {}'.format(df['Date \ Time'][0], df['Date \ Time'][len(df['Date \ Time'])-1])}, {'media[]':data})
+r = api.request('statuses/update_with_media', {'status':'4 Day Forecast for Glasgow from {} to {}'.format(df.iloc[0]['Time'],df.iloc[-1]['Time'])}, {'media[]':data})
 print(r.status_code)
