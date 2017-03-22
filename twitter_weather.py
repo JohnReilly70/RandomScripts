@@ -2,7 +2,6 @@ import json
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
-import datetime
 import matplotlib.dates as md
 import datetime
 from TwitterAPI import TwitterAPI
@@ -34,7 +33,7 @@ plt.xticks(rotation=10)
 plt.grid(axis='both',color='r')
 plt.ylabel("Temp (DegC)")
 delta_hour = datetime.timedelta(hours=1)
-plt.xlim(min(df['Time']-delta_hour),max(df['Time']+delta_hour))
+plt.xlim(min(df['Time']),max(df['Time']))
 plt.ylim(min(df['Temp'])-1,max(df['Temp'])+1)
 plt.title("Forecast Temperature Glasgow")
 plt.savefig('five_day_forecast_glasgow.png',dpi=300)
@@ -42,7 +41,7 @@ plt.savefig('five_day_forecast_glasgow.png',dpi=300)
 
 CONSUMER_KEY = ''
 CONSUMER_SECRET = ''
-ACCESS_TOKEN_KEY = ''
+ACCESS_TOKEN_KEY = '-'
 ACCESS_TOKEN_SECRET = ''
 
 
@@ -50,5 +49,5 @@ ACCESS_TOKEN_SECRET = ''
 api = TwitterAPI(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN_KEY, ACCESS_TOKEN_SECRET)
 file = open('five_day_forecast_glasgow.png', 'rb')
 data = file.read()
-r = api.request('statuses/update_with_media', {'status':'4 Day Forecast for Glasgow from {} to {}'.format(df.iloc[0]['Time'],df.iloc[-1]['Time'])}, {'media[]':data})
+r = api.request('statuses/update_with_media', {'status':'4 Day Forecast for Glasgow from {} to {} #Glasgow'.format(df.iloc[0]['Time'],df.iloc[-1]['Time'])}, {'media[]':data})
 print(r.status_code)
