@@ -78,7 +78,7 @@ class weather_temp():
         file = open('{}_day_forecast_{}.png'.format(self.num_of_days,self.location), 'rb')
         data = file.read()
         r = api.request('statuses/update_with_media', {
-            'status': '{0} Day Temperature Forecast for {1} from {2} to {3} #{1}'.format(self.num_of_days, self.location, self.df.iloc[0]['Time'],
+            'status': '{0} Day Temperature Forecast for {1} from {2} to {3} #{1}'.format((self.num_of_days-1), self.location, self.df.iloc[0]['Time'],
                                                                                              self.df.iloc[-1]['Time'])},
                         {'media[]': data})
         print(r.status_code)
