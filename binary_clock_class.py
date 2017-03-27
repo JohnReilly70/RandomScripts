@@ -15,8 +15,24 @@ class binary_clock():
         A method to convert any decimal number to a binary number with the desired number of bits
 
         :param decimal_num: number which you wish to convert to binary
-        :param nbits: number of bits you wish to represent your number (ISSUES: no error handling if number of bits are not enough to represent the number)
+        :param nbits: number of bits you wish to represent your number
         """
+        try:
+            if decimal_num > 2**nbits:
+                raise ValueError
+            binary = []
+            for bit in range(0, nbits):
+                temp_value = decimal_num % 2
+                binary.append(int(temp_value))
+                if temp_value == 1:
+                    decimal_num = (decimal_num - 1) / 2
+                else:
+                    decimal_num = decimal_num / 2
+
+            binary = "".join(str(bit) for bit in binary[::-1])
+            return binary
+        except ValueError:
+            print("ERROR OCCURRED: {} bits cannot represent the number {}, number of required bits is {}".format(nbits,decimal_num,decimal_num.bit_length()))
 
         binary = []
         for bit in range(0, nbits):
