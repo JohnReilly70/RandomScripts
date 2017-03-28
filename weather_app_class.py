@@ -64,6 +64,8 @@ class weather_temp():
         ax=plt.gca()
         xfmt = md.DateFormatter('%d/%m/%y %p')
         ax.xaxis.set_major_formatter(xfmt)
+        locator = md.HourLocator(byhour=[0, 12])
+        ax.xaxis.set_major_locator(locator)
         plt.plot(self.df['Time'],self.df['Temp'], 'k--^')
         plt.xticks(rotation=10)
         plt.grid(axis='both',color='r')
