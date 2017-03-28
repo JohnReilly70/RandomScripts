@@ -18,7 +18,7 @@ class weather_temp():
     '''
 
 
-    def __init__(self,location, consumer_key, consumer_secret, access_token_key, access_token_secret, location_id, api_id, num_of_days=5):
+    def __init__(self,location, consumer_key, consumer_secret, access_token_key, access_token_secret, location_id, api_id, num_of_days=4):
         self.api_id = api_id
         self.location = location
         self.location_id = location_id
@@ -53,22 +53,21 @@ class weather_temp():
 
     def date_range_for_graph(self):
         today = datetime.datetime.today().date()
-        delta1 = datetime.timedelta(days=1)
         delta2 = datetime.timedelta(days=self.num_of_days)
-        delta1_date = today + delta1
         delta2_date = today + delta2
-        time_mask = (self.df['Time'] >= delta1_date) & (self.df['Time'] <= delta2_date)
+        time_mask = (self.df['Time'] >= today) & (self.df['Time'] <= delta2_date)
         self.df = self.df.loc[time_mask]
 
     def ploting_graph(self):
         ax=plt.gca()
-        xfmt = md.DateFormatter('%d/%m/%y %p')
-        ax.xaxis.set_major_formatter(xfmt)
+        ax.xaxis.set_major_formatter(md.DateFormatter('%d/%m/%y %H:%M%p'))
+        ax.xaxis.set_major_locator(md.HourLocator(byhour=[0]))
+        ax.xaxis.set_minor_locator(md.HourLocator(byhour=[12]))
         plt.plot(self.df['Time'],self.df['Temp'], 'k--^')
-        plt.xticks(rotation=10)
+        plt.xticks(rotation=0)
         plt.grid(axis='both',color='r')
         plt.ylabel("Temp (DegC)")
-        plt.xlim(min(self.df['Time']),max(self.df['Time']))
+        plt.xlim(min(self.df['Time']-datetime.timedelta(hours=2)),max(self.df['Time']+datetime.timedelta(hours=2)))
         plt.ylim(min(self.df['Temp'])-1,max(self.df['Temp'])+1)
         plt.title("Forecast Temperature {}".format(self.location))
         plt.savefig('{}_day_forecast_{}.png'.format(self.num_of_days,self.location),dpi=300)
@@ -96,4 +95,5 @@ class weather_temp():
 # Weather_location = weather_temp(location, consumer_key, consumer_secret, access_token_key, access_token_secret, location_id, api_id, num_of_days=5)
 Weather_location = weather_temp()
 Weather_location.start_tweeting()
+
 
