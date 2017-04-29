@@ -22,3 +22,19 @@ def code_timer_loops(num_loops):
         return timer_wrapper
 
     return code_timer
+
+
+def add_bracket(bracket_type):
+
+    def bracket(func):
+
+        @wraps(func)
+        def bracket_wrapper(*args):
+
+            string = func(*args)
+
+            return "<{0}>{1}</{0}>".format(bracket_type,string)
+
+        return bracket_wrapper
+
+    return bracket
